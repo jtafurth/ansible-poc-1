@@ -1,0 +1,61 @@
+# ec2_test.yml
+
+- hosts: localhost
+  name: provision play
+  connection: local
+  gather_facts: False
+  vars:
+      group: ansible-poc-1
+      key_name: ansible-poc-2-key
+      ami_id: ami-af4333cf
+      region: us-west-1
+      sg_group: ansible-poc-1
+
+  tasks:
+ 
+    - name: Provision a set of instances
+      ec2:
+         key_name: "{{ key_name }}"
+         group: "{{ sg_group }}"
+         instance_type: t2.micro
+         image: "{{ ami_id }}"
+         region: "{{ region }}"
+         wait: true
+         exact_count: 2
+         count_tag:
+             Name: demo
+         instance_tags:
+             Name: demo
+      register: ec2list
+
+    # - debug:
+    #     msg: "{{ ec2list }}"
+
+    - name: add all instances IP to host group
+      add_host: hostname={{ item.public_ip }} groups=ec2hosts
+      with_items: "{{ ec2list.tagged_instances }}"
+
+- hosts: ec2hosts
+  name: configuration play
+  remote_user: centos
+  become: true
+  gather_facts: True
+
+  tasks:
+
+      - name: Install NTP service
+        yum:
+            name: ntpdate
+            state: latest
+
+      - name: Start NTP service
+        service:
+            name: ntpdate
+            enabled: true
+            state: running
+
+      - name: Configure NTP date
+        shell: ntpdate pool.ntp.org
+
+      - name: Verify time on each server
+        shell: date
