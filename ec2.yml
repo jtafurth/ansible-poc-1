@@ -52,9 +52,9 @@
          msg: "{{ ssh_known_hosts_result }}"
 
     - name: accept new ssh fingerprints
-      shell: ssh-keyscan -H {{ item.public_ip }} >> ~/.ssh/known_hosts
-      with_items: "{{ ec2list.tagged_instances }}"
-      when: ssh_known_hosts_result.stdout == ""
+      shell: ssh-keyscan -H {{ item.item.public_ip }} >> ~/.ssh/known_hosts
+      with_items: "{{ ssh_known_hosts_result }}"
+      when: item.stdout == ""
 
 - hosts: ec2hosts
   name: configuration play
