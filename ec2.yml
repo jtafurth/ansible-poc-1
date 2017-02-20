@@ -48,10 +48,10 @@
       register: ssh_known_hosts_result
       ignore_errors: true
 
-    - debug:
-         msg: "{{ ssh_known_hosts_result }}"
+    #- debug:
+    #     msg: "{{ ssh_known_hosts_result }}"
 
-    - name: accept new ssh fingerprints
+    - name: accept new ssh fingerprints if they are not already there
       shell: ssh-keyscan -H {{ item.item.public_ip }} >> ~/.ssh/known_hosts
       with_items: "{{ ssh_known_hosts_result.results }}"
       when: item.stdout == ""
