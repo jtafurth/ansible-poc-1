@@ -40,11 +40,10 @@
          host: "{{ item.public_ip }}"
          port: 22
          state: present
-         delay: 5
       with_items: "{{ ec2list.tagged_instances }}"
 
     - name: check if host is already in known_hosts file
-      shell: ssh-keygen ~/.ssh/known_hosts -F {{ item }}
+      shell: ssh-keygen -f ~/.ssh/known_hosts -F {{ item }}
       with_items: ec2hosts
       register: ssh_known_hosts_result
       ignore_errors: true
