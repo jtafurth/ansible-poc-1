@@ -27,8 +27,7 @@
          instance_tags:
              Name: demo
       register: ec2list
-
-     - debug:
+      debug:
          msg: "{{ ec2list }}"
 
     - name: add all instances IP to host group
