@@ -56,6 +56,7 @@
       shell: ssh-keyscan -H {{ item.item.public_ip }} >> ~/.ssh/known_hosts
       with_items: "{{ ssh_known_hosts_result.results }}"
       when: item.stdout == ""
+      no_log: true
 
 - hosts: ec2hosts
   name: configuration play
