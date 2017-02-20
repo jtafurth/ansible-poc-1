@@ -44,7 +44,7 @@
 
     - name: check if host is already in known_hosts file
       command: ssh-keygen -f ~/.ssh/known_hosts -F {{ item.public_ip }}
-      with_items: {{ ec2list.tagged_instances }}
+      with_items: "{{ ec2list.tagged_instances }}"
       register: ssh_known_hosts_result
       ignore_errors: true
 
