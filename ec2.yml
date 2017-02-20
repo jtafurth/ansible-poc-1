@@ -43,8 +43,8 @@
       with_items: "{{ ec2list.tagged_instances }}"
 
     - name: check if host is already in known_hosts file
-      shell: ssh-keygen -f ~/.ssh/known_hosts -F {{ item }}
-      with_items: ec2hosts
+      command: ssh-keygen -f ~/.ssh/known_hosts -F {{ item.public_ip }}
+      with_items: {{ ec2list.tagged_instances }}
       register: ssh_known_hosts_result
       ignore_errors: true
 
