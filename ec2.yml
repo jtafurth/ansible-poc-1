@@ -47,6 +47,7 @@
       with_items: "{{ ec2list.tagged_instances }}"
       register: ssh_known_hosts_result
       ignore_errors: true
+      no_log: true
 
     #- debug:
     #     msg: "{{ ssh_known_hosts_result }}"
