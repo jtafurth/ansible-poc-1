@@ -28,8 +28,8 @@
              Name: demo
       register: ec2list
 
-    # - debug:
-    #     msg: "{{ ec2list }}"
+     - debug:
+         msg: "{{ ec2list }}"
 
     - name: add all instances IP to host group
       add_host: hostname={{ item.public_ip }} groups=ec2hosts
