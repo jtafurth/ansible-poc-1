@@ -38,10 +38,10 @@
     - name: wait for hosts to go up
       wait_for: 
          host: "{{ item.public_ip }}"
-         with_items: "{{ ec2list.tagged_instances }}"
          port: 22
          state: present
          delay: 5
+      with_items: "{{ ec2list.tagged_instances }}"
 
 - hosts: ec2hosts
   name: configuration play
